@@ -15,6 +15,10 @@ var AWS = require('aws-sdk');
  *         @property {String} key
  *         @property {String} secret
  *         @property {String} bucket
+ *         @property {String} region
+ *         @property {String} endpoint
+ *         @property {String} sslEnabled
+ *         @property {String} s3ForcePathStyle
  *
  * @returns {Dictionary}
  *         @property {Function} read
@@ -206,7 +210,9 @@ function _buildS3Client(s3ClientOpts) {
     region: s3ClientOpts.region,
     accessKeyId: s3ClientOpts.key,
     secretAccessKey: s3ClientOpts.secret,
-    endpoint: s3ClientOpts.endpoint
+    endpoint: s3ClientOpts.endpoint,
+    sslEnabled: s3ClientOpts.sslEnabled,
+    s3ForcePathStyle: s3ClientOpts.s3ForcePathStyle
   });
   return new AWS.S3(s3ConstructorArgins);
 }//ƒ
