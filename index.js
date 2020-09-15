@@ -19,7 +19,7 @@ var AWS = require('aws-sdk');
  *         @property {String} endpoint
  *         @property {String} sslEnabled
  *         @property {String} s3ForcePathStyle
- *         @property {Object} httpOptions
+ *         @property {Object} allowSelfSignedCerts
  *
  * @returns {Dictionary}
  *         @property {Function} read
@@ -214,8 +214,16 @@ function _buildS3Client(s3ClientOpts) {
     endpoint: s3ClientOpts.endpoint,
     sslEnabled: s3ClientOpts.sslEnabled,
     s3ForcePathStyle: s3ClientOpts.s3ForcePathStyle,
-    httpOptions: s3ClientOpts.httpOptions
   });
+
+  if(s3ClientOpts.allowSelfSignedCerts) {
+    var https = require('https');
+    var httpsAgent = new https.Agent({ rejectUnauthorized: false });
+    s3ConstructorArgins.httpOptions = {
+      agent: httpsAgent
+    }
+  }
+
   return new AWS.S3(s3ConstructorArgins);
 }//ƒ
 
