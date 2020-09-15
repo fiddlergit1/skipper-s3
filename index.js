@@ -19,6 +19,7 @@ var AWS = require('aws-sdk');
  *         @property {String} endpoint
  *         @property {String} sslEnabled
  *         @property {String} s3ForcePathStyle
+ *         @property {Object} customCertificates
  *         @property {Object} allowSelfSignedCerts
  *
  * @returns {Dictionary}
@@ -220,7 +221,13 @@ function _buildS3Client(s3ClientOpts) {
     var https = require('https');
     var httpsAgent = new https.Agent({ rejectUnauthorized: false });
     s3ConstructorArgins.httpOptions = {
-      agent: httpsAgent
+      agent: httpsAgent,
+    }
+  }
+
+  if(s3ClientOpts.customCertificates) {
+    s3ConstructorArgins.httpOptions = {
+      ca: Buffer.from(s3ClientOpts.customCertificates),
     }
   }
 
