@@ -17,10 +17,11 @@ var AWS = require('aws-sdk');
  *         @property {String} bucket
  *         @property {String} region
  *         @property {String} endpoint
- *         @property {String} sslEnabled
+ *         @property {Boolean} sslEnabled
  *         @property {String} s3ForcePathStyle
  *         @property {Object} customCertificates
- *         @property {Object} allowSelfSignedCerts
+ *         @property {Boolean} allowSelfSignedCerts
+ *         @property {String} acl
  *
  * @returns {Dictionary}
  *         @property {Function} read
@@ -241,7 +242,8 @@ function _uploadFile(incomingFd, incomingFileStream, handleProgress, s3ClientOpt
     Bucket: s3ClientOpts.bucket,
     Key: incomingFd.replace(/^\/+/, ''),//« remove any leading slashes
     Body: incomingFileStream,
-    ContentType: mime.getType(incomingFd)//« advisory; makes things nicer in the S3 dashboard
+    ContentType: mime.getType(incomingFd),//« advisory; makes things nicer in the S3 dashboard
+    ACL: s3ClientOpts.acl,
   }), (err, rawS3ResponseData)=>{
     if (err) {
       return done(err);
